@@ -3,6 +3,7 @@ let context = canvas.getContext('2d');
 let background = new Image(600,600);
 let initialTree = 10;
 let posArray = [];
+let year = 0;
 const decreaseTree = 800;
 background.src = 'earth.png';
 let flag = true;
@@ -58,14 +59,26 @@ const putAddBtn = () => {
         initialTree+=1
         addTree();
         flag = !flag;
+        changeBar();
     }
+}
+
+const changeBar = () => {
+    let bar = document.getElementById('bar');
+    bar.setAttribute("aria-valuenow", initialTree);
+    bar.setAttribute("style", "width:" + 100 * (initialTree/10) +"%");
 }
 
 //constant
 const id = setInterval(()=> {
+    flag = true;
+    initialTree -= 2;
+    year += 100;
+    changeBar();
     posArray.splice([Math.floor(Math.random() * posArray.length)],1);
     posArray.splice([Math.floor(Math.random() * posArray.length)],1);
-
+    let yearElm = document.getElementById('year');
+    yearElm.textContent = year + "年後";
     context.clearRect(0,0,600,600);
     context.beginPath();
     let background = new Image(600,600);
@@ -73,6 +86,7 @@ const id = setInterval(()=> {
     background.addEventListener('load', () => {
         context.drawImage(background, 0,0, 600, 600);
     }, false);
+
     posArray.forEach((pos) => {
         let tree = new Image(52, 80);
         tree.src = './tree.png';
@@ -80,11 +94,9 @@ const id = setInterval(()=> {
             context.drawImage(tree, pos.x, pos.y, 52, 80);
         });
     });
-    flag = true;
-    initialTree -= 2;
-    console.log(initialTree);
     if(initialTree <= 0) {
         clearInterval(id);
         console.log("game over")
+        $('#exampleModal').modal('show')
     }
-},3000);
+},10000);
