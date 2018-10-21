@@ -8,7 +8,8 @@ body {
 #contents h1 {
     position: absolute;
     top: 0;
-    margin: 0 30%;
+    font-size: 1.3em;
+    margin: 0 20%;
     color: white;
 }
 
